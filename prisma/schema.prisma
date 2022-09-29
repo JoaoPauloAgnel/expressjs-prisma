@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -10,9 +10,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Todo {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  text      String
-  completed Boolean
+model Game {
+  id        String @id @default(uuid())
+  title     String
+  bannerUrl String
+  ads       Ad[]
+}
+
+model Ad {
+  id              String   @id @default(uuid())
+  gameId          String
+  name            String
+  yearsPlaying    Int
+  discord         String
+  weekDays        String
+  hoursStart      Int // Salvar em minutos
+  hourEnd         Int
+  useVoiceChannel Boolean
+  createdAt       DateTime @default(now()) // O default seta um valor padrão 
+
+  game Game @relation(fields: [gameId], references: [id]) //Após referenciar é só salvar
 }
